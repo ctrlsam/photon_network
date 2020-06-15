@@ -4,20 +4,24 @@ from time import sleep
 import binascii
 
 def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
+    ''' returns a readable string from a bit'''
     n = int(bits, 2)
-    return int2bytes(n).decode(encoding, errors)
+    return int_to_bytes(n).decode(encoding, errors)
 
-def int2bytes(i):
+def int_to_bytes(i):
+    ''' convert series of bits to a byte '''
     hex_string = '%x' % i
     n = len(hex_string)
     return binascii.unhexlify(hex_string.zfill(n + (n & 1)))
 
 def start():
+    ''' initiate the receiver '''
     sensor = LightSensor(config.RECEIVER_PIN)
     chars = []
     received = ""
     running = True
 
+    ''' Loop until detected laser (syncing) '''
     while True:
         if int(sensor.light_detected):
             break
@@ -56,8 +60,6 @@ def start():
 
     print(msg)
     print(chars)
-    chars = []
-    received = ""
 
 
 
